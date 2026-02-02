@@ -11,23 +11,26 @@ import { StaffFormComponent } from './components/staff/staff-form/staff-form.com
 import { IssueBookComponent } from './components/issues/issue-book/issue-book.component';
 import { IssueListComponent } from './components/issues/issue-list/issue-list.component';
 import { ReportsComponent } from './components/reports/reports.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'books', component: BookListComponent },
-  { path: 'books/new', component: BookFormComponent },
-  { path: 'books/:id/edit', component: BookFormComponent },
-  { path: 'books/:id/copies', component: BookCopyListComponent },
-  { path: 'members', component: MemberListComponent },
-  { path: 'members/new', component: MemberFormComponent },
-  { path: 'members/:id/edit', component: MemberFormComponent },
-  { path: 'staff', component: StaffListComponent },
-  { path: 'staff/new', component: StaffFormComponent },
-  { path: 'staff/:id/edit', component: StaffFormComponent },
-  { path: 'issues', component: IssueListComponent },
-  { path: 'issues/new', component: IssueBookComponent },
-  { path: 'reports', component: ReportsComponent }
+  { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'books', component: BookListComponent, canActivate: [AuthGuard] },
+  { path: 'books/new', component: BookFormComponent, canActivate: [AuthGuard] },
+  { path: 'books/:id/edit', component: BookFormComponent, canActivate: [AuthGuard] },
+  { path: 'books/:id/copies', component: BookCopyListComponent, canActivate: [AuthGuard] },
+  { path: 'members', component: MemberListComponent, canActivate: [AuthGuard] },
+  { path: 'members/new', component: MemberFormComponent, canActivate: [AuthGuard] },
+  { path: 'members/:id/edit', component: MemberFormComponent, canActivate: [AuthGuard] },
+  { path: 'staff', component: StaffListComponent, canActivate: [AuthGuard] },
+  { path: 'staff/new', component: StaffFormComponent, canActivate: [AuthGuard] },
+  { path: 'staff/:id/edit', component: StaffFormComponent, canActivate: [AuthGuard] },
+  { path: 'issues', component: IssueListComponent, canActivate: [AuthGuard] },
+  { path: 'issues/new', component: IssueBookComponent, canActivate: [AuthGuard] },
+  { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

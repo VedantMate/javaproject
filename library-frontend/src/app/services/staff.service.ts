@@ -14,7 +14,7 @@ export interface Staff {
   providedIn: 'root'
 })
 export class StaffService {
-  private apiUrl = 'http://localhost:8080/api/admin/staff';
+  private apiUrl = 'http://localhost:8080/api/staff';
 
   constructor(private http: HttpClient) { }
 

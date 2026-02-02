@@ -1,24 +1,127 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   template: `
-    <nav>
-      <ul>
-        <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
-        <li><a routerLink="/books" routerLinkActive="active">Books</a></li>
-        <li><a routerLink="/members" routerLinkActive="active">Members</a></li>
-        <li><a routerLink="/staff" routerLinkActive="active">Staff</a></li>
-        <li><a routerLink="/issues" routerLinkActive="active">Issues</a></li>
-        <li><a routerLink="/reports" routerLinkActive="active">Reports</a></li>
-      </ul>
+    <nav *ngIf="authService.isLoggedIn()">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <h2>Library Management System</h2>
+        </div>
+        <ul class="nav-links">
+          <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
+          <li><a routerLink="/books" routerLinkActive="active">Books</a></li>
+          <li><a routerLink="/members" routerLinkActive="active">Members</a></li>
+          <li><a routerLink="/staff" routerLinkActive="active">Staff</a></li>
+          <li><a routerLink="/issues" routerLinkActive="active">Issues</a></li>
+          <li><a routerLink="/reports" routerLinkActive="active">Reports</a></li>
+        </ul>
+        <div class="nav-user">
+          <span class="user-info" *ngIf="authService.currentUserValue">
+            {{ authService.currentUserValue.username }} ({{ authService.currentUserValue.role }})
+          </span>
+          <button class="logout-btn" (click)="logout()">Logout</button>
+        </div>
+      </div>
     </nav>
-    <div class="container">
+    <div class="container" [class.full-width]="!authService.isLoggedIn()">
       <router-outlet></router-outlet>
     </div>
   `,
-  styles: []
+  styles: [`
+    nav {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .nav-brand h2 {
+      color: white;
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav-links li a {
+      color: white;
+      text-decoration: none;
+      padding: 15px 20px;
+      display: block;
+      transition: background-color 0.3s;
+    }
+
+    .nav-links li a:hover,
+    .nav-links li a.active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-info {
+      color: white;
+      font-size: 14px;
+    }
+
+    .logout-btn {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid white;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .logout-btn:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .container.full-width {
+      padding: 0;
+      max-width: 100%;
+    }
+  `]
 })
 export class AppComponent {
   title = 'Library Management System';
+
+  constructor(
+    public authService: AuthService,
+    private router: Router
+  ) {}
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }

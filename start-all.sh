@@ -36,6 +36,8 @@ echo "Checking if ports are available..."
 check_port 8761 || exit 1
 check_port 8080 || exit 1
 check_port 8081 || exit 1
+check_port 8083 || exit 1
+check_port 8084 || exit 1
 check_port 4200 || exit 1
 
 echo -e "${GREEN}All ports are available!${NC}"
@@ -81,9 +83,8 @@ echo "Waiting for API Gateway to register (15 seconds)..."
 sleep 15
 
 echo ""
-echo -e "${YELLOW}Step 3/4: Starting Catalog Service (Port 8081)...${NC}"
-cd catalog-service
-mvn"$SCRIPT_DIR/catalog-service"
+echo -e "${YELLOW}Step 3/6: Starting Catalog Service (Port 8081)...${NC}"
+cd "$SCRIPT_DIR/catalog-service"
 mvn clean install -DskipTests > /dev/null 2>&1
 echo "Building Catalog Service..."
 mvn spring-boot:run > "$SCRIPT_DIR/logs/catalog-service.log" 2>&1 &
@@ -95,9 +96,34 @@ echo "Waiting for Catalog Service to register (20 seconds)..."
 sleep 20
 
 echo ""
-echo -e "${YELLOW}Step 4/4: Starting Angular Frontend (Port 4200)...${NC}"
-cd library-frontend
-"$SCRIPT_DIR/library-frontend"
+echo -e "${YELLOW}Step 4/6: Starting Circulation Service (Port 8083)...${NC}"
+cd "$SCRIPT_DIR/circulation-service"
+mvn clean install -DskipTests > /dev/null 2>&1
+echo "Building Circulation Service..."
+mvn spring-boot:run > "$SCRIPT_DIR/logs/circulation-service.log" 2>&1 &
+CIRCULATION_PID=$!
+echo -e "${GREEN}Circulation Service started with PID: $CIRCULATION_PID${NC}"
+echo $CIRCULATION_PID > "$SCRIPT_DIR/pids/circulation-service.pid"
+# Wait for Circulation Service to be ready
+echo "Waiting for Circulation Service to register (20 seconds)..."
+sleep 20
+
+echo ""
+echo -e "${YELLOW}Step 5/6: Starting Reporting Service (Port 8084)...${NC}"
+cd "$SCRIPT_DIR/reporting-service"
+mvn clean install -DskipTests > /dev/null 2>&1
+echo "Building Reporting Service..."
+mvn spring-boot:run > "$SCRIPT_DIR/logs/reporting-service.log" 2>&1 &
+REPORTING_PID=$!
+echo -e "${GREEN}Reporting Service started with PID: $REPORTING_PID${NC}"
+echo $REPORTING_PID > "$SCRIPT_DIR/pids/reporting-service.pid"
+# Wait for Reporting Service to be ready
+echo "Waiting for Reporting Service to register (20 seconds)..."
+sleep 20
+
+echo ""
+echo -e "${YELLOW}Step 6/6: Starting Angular Frontend (Port 4200)...${NC}"
+cd "$SCRIPT_DIR/library-frontend"
 
 # Install npm dependencies if node_modules doesn't exist
 if [ ! -d "node_modules" ]; then
@@ -115,12 +141,15 @@ echo -e "${GREEN}All services started successfully!${NC}"
 echo "=========================================="
 echo ""
 echo "Service URLs:"
-echo "  • Eureka Dashboard:    http://localhost:8761"
-echo "  • API Gateway:         http://localhost:8080"
-echo "  • Catalog Service:     http://localhost:8081"
-echo "  • Swagger UI:          http://localhost:8081/swagger-ui.html"
-echo "  • H2 Console:          http://localhost:8081/h2-console"
-echo "  • Frontend App:        http://localhost:4200"
+echo "  • Eureka Dashboard:        http://localhost:8761"
+echo "  • API Gateway:             http://localhost:8080"
+echo "  • Catalog Service:         http://localhost:8081"
+echo "  • Catalog Swagger:         http://localhost:8081/swagger-ui.html"
+echo "  • Circulation Service:     http://localhost:8083"
+echo "  • Circulation Swagger:     http://localhost:8083/swagger-ui.html"
+echo "  • Reporting Service:       http://localhost:8084"
+echo "  • Reporting Swagger:       http://localhost:8084/swagger-ui.html"
+echo "  • Frontend App:            http://localhost:4200"
 echo ""
 echo "PIDs saved in 'pids' directory"
 echo "Logs saved in 'logs' directory"

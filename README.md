@@ -2,12 +2,31 @@
 
 A comprehensive Library Management System built with Spring Boot microservices architecture and Angular frontend.
 
-## Architecture
+## 🏗️ Microservices Architecture
 
+The system is divided into **3 specialized microservices** with proper separation of concerns:
+
+### 1. **Catalog Service** (Port: 8081)
+- Manages books, book copies, members, and staff
+- Core catalog data management
+- Provides internal APIs for other services
+
+### 2. **Circulation Service** (Port: 8083)
+- Handles book issue/return operations
+- Fine calculation and overdue tracking
+- Communicates with Catalog Service via Feign client
+
+### 3. **Reporting Service** (Port: 8084)
+- Generates reports and analytics
+- Aggregates data from Catalog and Circulation services
+- Dashboard metrics and insights
+
+### Infrastructure
 - **Eureka Server** (Port 8761): Service discovery and registration
 - **API Gateway** (Port 8080): Routes requests to microservices
-- **Catalog Service** (Port 8081): Core business logic for library operations
 - **Angular Frontend** (Port 4200): User interface
+
+📖 **[Read Detailed Architecture Documentation](./MICROSERVICES_ARCHITECTURE.md)**
 
 ## Tech Stack
 
@@ -15,8 +34,7 @@ A comprehensive Library Management System built with Spring Boot microservices a
 - Spring Boot 3.2.0
 - Maven
 - H2 Database (In-memory)
-- Spring Cloud (Eureka, Gateway)
-- OpenFeign
+- Spring Cloud (Eureka, Gateway, OpenFeign)
 - Swagger/OpenAPI
 - Lombok
 
@@ -28,20 +46,19 @@ A comprehensive Library Management System built with Spring Boot microservices a
 
 ## Features
 
-### Admin Functions
+### Admin Functions (Catalog Service)
 - Add, update, delete books
 - Manage book copies and inventory
 - Create and manage staff accounts
-- View all library operations
+- Manage member registrations
 
-### Librarian Functions
-- Register new members
+### Librarian Functions (Circulation Service)
 - Issue books to members
 - Return books and calculate fines
-- Update book copy status (damaged, lost)
-- Search books and members
+- Track overdue books
+- View issue history
 
-### Manager Functions
+### Manager Functions (Reporting Service)
 - View dashboard with key metrics
 - Generate inventory reports
 - Generate issue/return reports
@@ -50,13 +67,36 @@ A comprehensive Library Management System built with Spring Boot microservices a
 
 ## Getting Started
 
+### Quick Start (All Services)
+
+```bash
+chmod +x start-all.sh
+./start-all.sh
+```
+
+This will start all services in the correct order with appropriate wait times.
+
+**Service URLs:**
+- Eureka Dashboard: http://localhost:8761
+- API Gateway: http://localhost:8080
+- Catalog Service: http://localhost:8081/swagger-ui.html
+- Circulation Service: http://localhost:8083/swagger-ui.html
+- Reporting Service: http://localhost:8084/swagger-ui.html
+- Frontend: http://localhost:4200
+
+### Stop All Services
+
+```bash
+./stop-all.sh
+```
+
 ### Prerequisites
 - Java 17 or higher
 - Maven 3.6+
 - Node.js 18+ and npm
 - Git
 
-### Backend Setup
+### Manual Service Startup
 
 1. **Start Eureka Server**
    ```bash
@@ -80,6 +120,20 @@ A comprehensive Library Management System built with Spring Boot microservices a
    mvn spring-boot:run
    ```
 
+4. **Start Circulation Service**
+   ```bash
+   cd circulation-service
+   mvn clean install
+   mvn spring-boot:run
+   ```
+
+5. **Start Reporting Service**
+   ```bash
+   cd reporting-service
+   mvn clean install
+   mvn spring-boot:run
+   ```
+
 ### Frontend Setup
 
 1. **Install dependencies**
@@ -96,41 +150,44 @@ A comprehensive Library Management System built with Spring Boot microservices a
 
 ## API Documentation
 
-Once the Catalog Service is running, access Swagger UI at:
-http://localhost:8081/swagger-ui.html
+Access Swagger UI for each service:
+- **Catalog Service**: http://localhost:8081/swagger-ui.html
+- **Circulation Service**: http://localhost:8083/swagger-ui.html
+- **Reporting Service**: http://localhost:8084/swagger-ui.html
 
 ### Key API Endpoints
 
-#### Admin - Book Management
+#### Catalog Service - Book Management
 - `GET /api/admin/books` - Get all books
 - `POST /api/admin/books` - Create a new book
 - `PUT /api/admin/books/{id}` - Update a book
 - `DELETE /api/admin/books/{id}` - Delete a book
 - `GET /api/admin/books/search/title?title={title}` - Search by title
-- `GET /api/admin/books/search/author?author={author}` - Search by author
 
-#### Admin - Book Copy Management
-- `GET /api/admin/books/{bookId}/copies` - Get all copies of a book
-- `POST /api/admin/books/{bookId}/copies` - Add a new copy
-- `PUT /api/admin/books/copies/{id}` - Update a copy
-- `DELETE /api/admin/books/copies/{id}` - Delete a copy
-
-#### Admin - Staff Management
-- `GET /api/admin/staff` - Get all staff
-- `POST /api/admin/staff` - Create staff account
-- `PUT /api/admin/staff/{id}` - Update staff
-- `DELETE /api/admin/staff/{id}` - Delete staff
-
-#### Staff - Member Management
+#### Catalog Service - Member Management
 - `GET /api/staff/members` - Get all members
 - `POST /api/staff/members` - Register a member
 - `PUT /api/staff/members/{id}` - Update member
 - `DELETE /api/staff/members/{id}` - Delete member
 
-#### Staff - Issue/Return
-- `GET /api/staff/issues` - Get all issues
-- `POST /api/staff/issues` - Issue a book
-- `PUT /api/staff/issues/{id}/return` - Return a book
+#### Circulation Service - Issue/Return
+- `POST /api/circulation/issue` - Issue a book
+  ```json
+  {
+    "memberId": 1,
+    "bookCopyId": 1
+  }
+  ```
+- `PUT /api/circulation/return/{id}` - Return a book
+- `GET /api/circulation/issues/active` - Get active issues
+- `GET /api/circulation/issues/overdue` - Get overdue books
+- `GET /api/circulation/fine/{issueId}` - Calculate fine
+
+#### Reporting Service - Reports
+- `GET /api/reports/inventory` - Inventory report
+- `GET /api/reports/dashboard` - Dashboard metrics
+- `GET /api/reports/issues?startDate=2024-01-01&endDate=2024-12-31` - Issue report
+- `GET /api/reports/fines?startDate=2024-01-01&endDate=2024-12-31` - Fine report
 - `GET /api/staff/issues/overdue` - Get overdue books
 - `GET /api/staff/issues/{id}/fine` - Calculate fine
 

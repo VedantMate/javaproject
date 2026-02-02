@@ -18,39 +18,39 @@ export interface BookIssue {
   providedIn: 'root'
 })
 export class IssueService {
-  private apiUrl = 'http://localhost:8080/api/staff/issues';
+  private apiUrl = 'http://localhost:8080/api/circulation';
 
   constructor(private http: HttpClient) { }
 
   getAllIssues(): Observable<BookIssue[]> {
-    return this.http.get<BookIssue[]>(this.apiUrl);
+    return this.http.get<BookIssue[]>(`${this.apiUrl}/issues`);
   }
 
   getIssueById(id: number): Observable<BookIssue> {
-    return this.http.get<BookIssue>(`${this.apiUrl}/${id}`);
+    return this.http.get<BookIssue>(`${this.apiUrl}/issues/${id}`);
   }
 
   getIssuesByMember(memberId: number): Observable<BookIssue[]> {
-    return this.http.get<BookIssue[]>(`${this.apiUrl}/member/${memberId}`);
+    return this.http.get<BookIssue[]>(`${this.apiUrl}/issues/member/${memberId}`);
   }
 
   getActiveIssues(): Observable<BookIssue[]> {
-    return this.http.get<BookIssue[]>(`${this.apiUrl}/active`);
+    return this.http.get<BookIssue[]>(`${this.apiUrl}/issues/active`);
   }
 
   issueBook(memberId: number, bookCopyId: number): Observable<BookIssue> {
-    return this.http.post<BookIssue>(this.apiUrl, { memberId, bookCopyId });
+    return this.http.post<BookIssue>(`${this.apiUrl}/issue`, { memberId, bookCopyId });
   }
 
   returnBook(id: number): Observable<BookIssue> {
-    return this.http.put<BookIssue>(`${this.apiUrl}/${id}/return`, {});
+    return this.http.put<BookIssue>(`${this.apiUrl}/return/${id}`, {});
   }
 
   getOverdueBooks(): Observable<BookIssue[]> {
-    return this.http.get<BookIssue[]>(`${this.apiUrl}/overdue`);
+    return this.http.get<BookIssue[]>(`${this.apiUrl}/issues/overdue`);
   }
 
   calculateFine(id: number): Observable<{ fine: number }> {
-    return this.http.get<{ fine: number }>(`${this.apiUrl}/${id}/fine`);
+    return this.http.get<{ fine: number }>(`${this.apiUrl}/fine/${id}`);
   }
 }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,6 +17,8 @@ import { StaffFormComponent } from './components/staff/staff-form/staff-form.com
 import { IssueBookComponent } from './components/issues/issue-book/issue-book.component';
 import { IssueListComponent } from './components/issues/issue-list/issue-list.component';
 import { ReportsComponent } from './components/reports/reports.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthInterceptor } from './services/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { ReportsComponent } from './components/reports/reports.component';
     StaffFormComponent,
     IssueBookComponent,
     IssueListComponent,
-    ReportsComponent
+    ReportsComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +44,13 @@ import { ReportsComponent } from './components/reports/reports.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

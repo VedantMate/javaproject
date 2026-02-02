@@ -1,0 +1,61 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2 class="login-title">Library Management System</h2>
+    <h3 class="login-subtitle">Login</h3>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          formControlName="username"
+          class="form-control"
+          [class.is-invalid]="username?.invalid && username?.touched"
+          placeholder="Enter username"
+        />
+        <div class="invalid-feedback" *ngIf="username?.invalid && username?.touched">
+          Username is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-control"
+          [class.is-invalid]="password?.invalid && password?.touched"
+          placeholder="Enter password"
+        />
+        <div class="invalid-feedback" *ngIf="password?.invalid && password?.touched">
+          Password is required
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        [disabled]="loginForm.invalid || isLoading"
+      >
+        <span *ngIf="!isLoading">Login</span>
+        <span *ngIf="isLoading">Logging in...</span>
+      </button>
+    </form>
+
+    <div class="demo-credentials">
+      <p><strong>Demo Credentials:</strong></p>
+      <ul>
+        <li>Admin: admin / password123</li>
+        <li>Librarian: librarian / password123</li>
+        <li>Manager: manager / password123</li>
+        <li>Member: member / password123</li>
+      </ul>
+    </div>
+  </div>
+</div>

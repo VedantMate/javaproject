@@ -14,7 +14,7 @@ export interface Member {
   providedIn: 'root'
 })
 export class MemberService {
-  private apiUrl = 'http://localhost:8080/api/staff/members';
+  private apiUrl = 'http://localhost:8080/api/members';
 
   constructor(private http: HttpClient) { }
 
