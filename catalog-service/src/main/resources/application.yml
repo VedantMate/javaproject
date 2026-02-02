@@ -18,7 +18,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
 
     defer-datasource-initialization: true   # ✅ ADD THIS
 
@@ -27,6 +27,10 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.H2Dialect
+
+  sql:
+    init:
+      mode: never
 
 eureka:
   client:

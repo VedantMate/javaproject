@@ -19,19 +19,19 @@ INSERT INTO book_copies (id, book_id, rack_no, status) VALUES
 (9, 4, 'C1-002', 'AVAILABLE'),
 (10, 5, 'A3-001', 'AVAILABLE');
 
--- Insert sample members
-INSERT INTO members (id, name, email, phone, membership_status) VALUES
-(1, 'John Doe', 'john.doe@email.com', '1234567890', 'ACTIVE'),
-(2, 'Jane Smith', 'jane.smith@email.com', '0987654321', 'ACTIVE'),
-(3, 'Bob Johnson', 'bob.johnson@email.com', '5555555555', 'ACTIVE'),
-(4, 'Alice Williams', 'alice.williams@email.com', '4444444444', 'INACTIVE');
+-- Insert sample members (password is BCrypt encoded: 'password123')
+INSERT INTO members (id, name, email, phone, password, membership_status) VALUES
+(1, 'John Doe', 'john.doe@email.com', '1234567890', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8cvv8hXjrQmF0Ky/Wa', 'ACTIVE'),
+(2, 'Jane Smith', 'jane.smith@email.com', '0987654321', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8cvv8hXjrQmF0Ky/Wa', 'ACTIVE'),
+(3, 'Bob Johnson', 'bob.johnson@email.com', '5555555555', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8cvv8hXjrQmF0Ky/Wa', 'ACTIVE'),
+(4, 'Alice Williams', 'alice.williams@email.com', '4444444444', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8cvv8hXjrQmF0Ky/Wa', 'INACTIVE');
 
--- Insert sample staff
-INSERT INTO staff (id, name, role, email, status) VALUES
-(1, 'Admin User', 'ADMIN', 'admin@library.com', 'ACTIVE'),
-(2, 'Sarah Librarian', 'LIBRARIAN', 'sarah@library.com', 'ACTIVE'),
-(3, 'Mike Manager', 'MANAGER', 'mike@library.com', 'ACTIVE'),
-(4, 'Tom Librarian', 'LIBRARIAN', 'tom@library.com', 'ACTIVE');
+-- Insert sample staff (password is BCrypt encoded: 'password123')
+INSERT INTO staff (id, name, role, email, password, status) VALUES
+(1, 'Admin User', 'ADMIN', 'admin@library.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8cvv8hXjrQmF0Ky/Wa', 'ACTIVE'),
+(2, 'Sarah Librarian', 'LIBRARIAN', 'sarah@library.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8cvv8hXjrQmF0Ky/Wa', 'ACTIVE'),
+(3, 'Mike Manager', 'MANAGER', 'mike@library.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8cvv8hXjrQmF0Ky/Wa', 'ACTIVE'),
+(4, 'Tom Librarian', 'LIBRARIAN', 'tom@library.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8cvv8hXjrQmF0Ky/Wa', 'ACTIVE');
 
 -- Insert sample users (passwords are BCrypt encoded: 'password123')
 INSERT INTO users (id, username, password, email, role, enabled) VALUES

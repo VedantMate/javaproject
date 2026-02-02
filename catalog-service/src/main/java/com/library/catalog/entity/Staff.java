@@ -20,6 +20,9 @@ public class Staff {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false)
+    private String password;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StaffStatus status;
@@ -29,11 +32,12 @@ public class Staff {
     }
 
     // ✅ Parameterized Constructor
-    public Staff(Long id, String name, StaffRole role, String email, StaffStatus status) {
+    public Staff(Long id, String name, StaffRole role, String email, String password, StaffStatus status) {
         this.id = id;
         this.name = name;
         this.role = role;
         this.email = email;
+        this.password = password;
         this.status = status;
     }
 
@@ -77,5 +81,13 @@ public class Staff {
 
     public void setStatus(StaffStatus status) {
         this.status = status;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -19,6 +19,9 @@ public class Member {
     @Column(nullable = false)
     private String phone;
 
+    @Column(nullable = false)
+    private String password;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MembershipStatus membershipStatus;
@@ -29,12 +32,13 @@ public class Member {
 
     // ✅ Parameterized Constructor
     public Member(Long id, String name, String email, String phone,
-                  MembershipStatus membershipStatus) {
+                  String password, MembershipStatus membershipStatus) {
 
         this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
+        this.password = password;
         this.membershipStatus = membershipStatus;
     }
 
@@ -78,5 +82,13 @@ public class Member {
 
     public void setMembershipStatus(MembershipStatus membershipStatus) {
         this.membershipStatus = membershipStatus;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
