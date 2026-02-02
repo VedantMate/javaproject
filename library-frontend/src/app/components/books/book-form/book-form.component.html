@@ -1,0 +1,68 @@
+<div class="card">
+  <h1>{{ isEditMode ? 'Edit Book' : 'Add New Book' }}</h1>
+
+  <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="title">Title *</label>
+      <input 
+        type="text" 
+        id="title" 
+        formControlName="title" 
+        placeholder="Enter book title">
+      <div class="error" *ngIf="bookForm.get('title')?.invalid && bookForm.get('title')?.touched">
+        Title is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="author">Author *</label>
+      <input 
+        type="text" 
+        id="author" 
+        formControlName="author" 
+        placeholder="Enter author name">
+      <div class="error" *ngIf="bookForm.get('author')?.invalid && bookForm.get('author')?.touched">
+        Author is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="isbn">ISBN *</label>
+      <input 
+        type="text" 
+        id="isbn" 
+        formControlName="isbn" 
+        placeholder="Enter ISBN">
+      <div class="error" *ngIf="bookForm.get('isbn')?.invalid && bookForm.get('isbn')?.touched">
+        ISBN is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="category">Category *</label>
+      <input 
+        type="text" 
+        id="category" 
+        formControlName="category" 
+        placeholder="Enter category">
+      <div class="error" *ngIf="bookForm.get('category')?.invalid && bookForm.get('category')?.touched">
+        Category is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="status">Status *</label>
+      <select id="status" formControlName="status">
+        <option value="ACTIVE">Active</option>
+        <option value="INACTIVE">Inactive</option>
+      </select>
+    </div>
+
+    <div>
+      <button type="submit" class="btn btn-success" [disabled]="bookForm.invalid">
+        {{ isEditMode ? 'Update' : 'Create' }}
+      </button>
+      <button type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,57 @@
+<div class="card">
+  <h1>{{ isEditMode ? 'Edit Member' : 'Register New Member' }}</h1>
+
+  <form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Name *</label>
+      <input 
+        type="text" 
+        id="name" 
+        formControlName="name" 
+        placeholder="Enter member name">
+      <div class="error" *ngIf="memberForm.get('name')?.invalid && memberForm.get('name')?.touched">
+        Name is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email *</label>
+      <input 
+        type="email" 
+        id="email" 
+        formControlName="email" 
+        placeholder="Enter email address"
+        [readonly]="isEditMode">
+      <div class="error" *ngIf="memberForm.get('email')?.invalid && memberForm.get('email')?.touched">
+        Valid email is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Phone *</label>
+      <input 
+        type="tel" 
+        id="phone" 
+        formControlName="phone" 
+        placeholder="Enter phone number">
+      <div class="error" *ngIf="memberForm.get('phone')?.invalid && memberForm.get('phone')?.touched">
+        Phone is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="membershipStatus">Membership Status *</label>
+      <select id="membershipStatus" formControlName="membershipStatus">
+        <option value="ACTIVE">Active</option>
+        <option value="INACTIVE">Inactive</option>
+      </select>
+    </div>
+
+    <div>
+      <button type="submit" class="btn btn-success" [disabled]="memberForm.invalid">
+        {{ isEditMode ? 'Update' : 'Register' }}
+      </button>
+      <button type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,44 @@
+<div class="card">
+  <h1>Issue Book</h1>
+
+  <div class="form-group">
+    <label for="member">Select Member *</label>
+    <select id="member" [(ngModel)]="selectedMemberId">
+      <option value="">-- Select Member --</option>
+      <option *ngFor="let member of members" [value]="member.id">
+        {{ member.name }} ({{ member.email }})
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="book">Select Book *</label>
+    <select id="book" [(ngModel)]="selectedBookId" (change)="onBookSelect()">
+      <option value="">-- Select Book --</option>
+      <option *ngFor="let book of books" [value]="book.id">
+        {{ book.title }} by {{ book.author }}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group" *ngIf="selectedBookId">
+    <label for="copy">Select Available Copy *</label>
+    <select id="copy" [(ngModel)]="selectedCopyId">
+      <option value="">-- Select Copy --</option>
+      <option *ngFor="let copy of availableCopies" [value]="copy.id">
+        Copy #{{ copy.id }} - Rack: {{ copy.rackNo }}
+      </option>
+    </select>
+    <p *ngIf="availableCopies.length === 0" class="error">
+      No available copies for this book
+    </p>
+  </div>
+
+  <div class="mt-2">
+    <button (click)="issueBook()" class="btn btn-success" 
+            [disabled]="!selectedMemberId || !selectedCopyId">
+      Issue Book
+    </button>
+    <button (click)="cancel()" class="btn btn-danger">Cancel</button>
+  </div>
+</div>

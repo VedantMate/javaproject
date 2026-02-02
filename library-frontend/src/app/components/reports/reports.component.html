@@ -1,0 +1,149 @@
+<div class="card">
+  <h1>Reports & Analytics</h1>
+
+  <div style="display: flex; gap: 1rem; margin: 1.5rem 0; border-bottom: 2px solid #ddd;">
+    <button 
+      (click)="switchTab('inventory')" 
+      [class.btn-primary]="activeTab === 'inventory'"
+      [class.btn]="activeTab !== 'inventory'"
+      style="border-radius: 0; border-bottom: 3px solid;"
+      [style.border-color]="activeTab === 'inventory' ? '#3498db' : 'transparent'">
+      Inventory Report
+    </button>
+    <button 
+      (click)="switchTab('issues')" 
+      [class.btn-primary]="activeTab === 'issues'"
+      [class.btn]="activeTab !== 'issues'"
+      style="border-radius: 0; border-bottom: 3px solid;"
+      [style.border-color]="activeTab === 'issues' ? '#3498db' : 'transparent'">
+      Issue Report
+    </button>
+    <button 
+      (click)="switchTab('fines')" 
+      [class.btn-primary]="activeTab === 'fines'"
+      [class.btn]="activeTab !== 'fines'"
+      style="border-radius: 0; border-bottom: 3px solid;"
+      [style.border-color]="activeTab === 'fines' ? '#3498db' : 'transparent'">
+      Fine Report
+    </button>
+  </div>
+
+  <!-- Inventory Report -->
+  <div *ngIf="activeTab === 'inventory'">
+    <h2>Inventory Summary</h2>
+    <div class="dashboard-grid">
+      <div class="stat-card">
+        <h3>{{ inventoryReport.totalBooks || 0 }}</h3>
+        <p>Total Books</p>
+      </div>
+      <div class="stat-card">
+        <h3>{{ inventoryReport.totalCopies || 0 }}</h3>
+        <p>Total Copies</p>
+      </div>
+      <div class="stat-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+        <h3>{{ inventoryReport.availableCopies || 0 }}</h3>
+        <p>Available Copies</p>
+      </div>
+      <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+        <h3>{{ inventoryReport.issuedCopies || 0 }}</h3>
+        <p>Issued Copies</p>
+      </div>
+      <div class="stat-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+        <h3>{{ inventoryReport.damagedCopies || 0 }}</h3>
+        <p>Damaged Copies</p>
+      </div>
+      <div class="stat-card" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+        <h3>{{ inventoryReport.lostCopies || 0 }}</h3>
+        <p>Lost Copies</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Issue Report -->
+  <div *ngIf="activeTab === 'issues'">
+    <h2>Issue Report</h2>
+    
+    <div style="display: flex; gap: 1rem; margin: 1rem 0;">
+      <div class="form-group" style="flex: 1;">
+        <label>Start Date</label>
+        <input type="date" [(ngModel)]="startDate">
+      </div>
+      <div class="form-group" style="flex: 1;">
+        <label>End Date</label>
+        <input type="date" [(ngModel)]="endDate">
+      </div>
+      <div style="display: flex; align-items: flex-end;">
+        <button (click)="loadIssueReport()" class="btn btn-primary">Generate</button>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="stat-card">
+        <h3>{{ issueReport.totalIssues || 0 }}</h3>
+        <p>Total Issues</p>
+      </div>
+      <div class="stat-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+        <h3>{{ issueReport.returnedBooks || 0 }}</h3>
+        <p>Returned Books</p>
+      </div>
+      <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+        <h3>{{ issueReport.activeIssues || 0 }}</h3>
+        <p>Active Issues</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fine Report -->
+  <div *ngIf="activeTab === 'fines'">
+    <h2>Fine Report</h2>
+    
+    <div style="display: flex; gap: 1rem; margin: 1rem 0;">
+      <div class="form-group" style="flex: 1;">
+        <label>Start Date</label>
+        <input type="date" [(ngModel)]="startDate">
+      </div>
+      <div class="form-group" style="flex: 1;">
+        <label>End Date</label>
+        <input type="date" [(ngModel)]="endDate">
+      </div>
+      <div style="display: flex; align-items: flex-end;">
+        <button (click)="loadFineReport()" class="btn btn-primary">Generate</button>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="stat-card">
+        <h3>${{ fineReport.totalFines || 0 }}</h3>
+        <p>Total Fines Collected</p>
+      </div>
+      <div class="stat-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+        <h3>{{ fineReport.overdueCount || 0 }}</h3>
+        <p>Overdue Books</p>
+      </div>
+    </div>
+
+    <div *ngIf="fineReport.overdueBooks && fineReport.overdueBooks.length > 0" class="mt-2">
+      <h3>Overdue Books List</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Issue ID</th>
+            <th>Member ID</th>
+            <th>Book ID</th>
+            <th>Due Date</th>
+            <th>Days Overdue</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let book of fineReport.overdueBooks">
+            <td>{{ book.id }}</td>
+            <td>{{ book.memberId }}</td>
+            <td>{{ book.bookId }}</td>
+            <td>{{ book.dueDate }}</td>
+            <td class="error">Overdue</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

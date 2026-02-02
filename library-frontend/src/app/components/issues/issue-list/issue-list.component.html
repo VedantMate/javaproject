@@ -1,0 +1,63 @@
+<div class="card">
+  <h1>Book Issues</h1>
+
+  <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
+    <button routerLink="/issues/new" class="btn btn-success">Issue Book</button>
+    
+    <button (click)="toggleFilter()" class="btn btn-primary">
+      {{ showActiveOnly ? 'Show All Issues' : 'Show Active Issues Only' }}
+    </button>
+  </div>
+
+  <table *ngIf="issues.length > 0">
+    <thead>
+      <tr>
+        <th>Issue ID</th>
+        <th>Member ID</th>
+        <th>Book ID</th>
+        <th>Copy ID</th>
+        <th>Issue Date</th>
+        <th>Due Date</th>
+        <th>Return Date</th>
+        <th>Fine</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let issue of issues">
+        <td>{{ issue.id }}</td>
+        <td>{{ issue.memberId }}</td>
+        <td>{{ issue.bookId }}</td>
+        <td>{{ issue.bookCopyId }}</td>
+        <td>{{ issue.issueDate }}</td>
+        <td>{{ issue.dueDate }}</td>
+        <td>{{ issue.returnDate || '-' }}</td>
+        <td>${{ issue.fine }}</td>
+        <td>
+          <span class="badge" [ngClass]="{
+            'badge-issued': issue.status === 'ISSUED',
+            'badge-available': issue.status === 'RETURNED',
+            'badge-damaged': issue.status === 'OVERDUE'
+          }">
+            {{ issue.status }}
+          </span>
+        </td>
+        <td>
+          <button *ngIf="issue.status === 'ISSUED'" 
+                  (click)="returnBook(issue.id!)" 
+                  class="btn btn-success">
+            Return
+          </button>
+          <button *ngIf="issue.status === 'ISSUED'" 
+                  (click)="calculateFine(issue.id!)" 
+                  class="btn btn-warning">
+            Check Fine
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="issues.length === 0" class="text-center mt-2">No issues found.</p>
+</div>

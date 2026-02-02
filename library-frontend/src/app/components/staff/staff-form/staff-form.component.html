@@ -1,0 +1,54 @@
+<div class="card">
+  <h1>{{ isEditMode ? 'Edit Staff' : 'Add New Staff' }}</h1>
+
+  <form [formGroup]="staffForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Name *</label>
+      <input 
+        type="text" 
+        id="name" 
+        formControlName="name" 
+        placeholder="Enter staff name">
+      <div class="error" *ngIf="staffForm.get('name')?.invalid && staffForm.get('name')?.touched">
+        Name is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="role">Role *</label>
+      <select id="role" formControlName="role">
+        <option value="ADMIN">Admin</option>
+        <option value="LIBRARIAN">Librarian</option>
+        <option value="MANAGER">Manager</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email *</label>
+      <input 
+        type="email" 
+        id="email" 
+        formControlName="email" 
+        placeholder="Enter email address"
+        [readonly]="isEditMode">
+      <div class="error" *ngIf="staffForm.get('email')?.invalid && staffForm.get('email')?.touched">
+        Valid email is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="status">Status *</label>
+      <select id="status" formControlName="status">
+        <option value="ACTIVE">Active</option>
+        <option value="INACTIVE">Inactive</option>
+      </select>
+    </div>
+
+    <div>
+      <button type="submit" class="btn btn-success" [disabled]="staffForm.invalid">
+        {{ isEditMode ? 'Update' : 'Create' }}
+      </button>
+      <button type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

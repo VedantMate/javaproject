@@ -1,0 +1,64 @@
+<div class="card">
+  <h1>Book Management</h1>
+  
+  <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
+    <button routerLink="/books/new" class="btn btn-primary">Add New Book</button>
+    
+    <div style="display: flex; gap: 1rem;">
+      <div>
+        <input 
+          type="text" 
+          [(ngModel)]="searchTitle" 
+          placeholder="Search by title" 
+          (keyup.enter)="searchByTitle()"
+          style="width: 200px;">
+        <button (click)="searchByTitle()" class="btn btn-primary">Search</button>
+      </div>
+      
+      <div>
+        <input 
+          type="text" 
+          [(ngModel)]="searchAuthor" 
+          placeholder="Search by author" 
+          (keyup.enter)="searchByAuthor()"
+          style="width: 200px;">
+        <button (click)="searchByAuthor()" class="btn btn-primary">Search</button>
+      </div>
+    </div>
+  </div>
+
+  <table *ngIf="books.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN</th>
+        <th>Category</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of books">
+        <td>{{ book.id }}</td>
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.isbn }}</td>
+        <td>{{ book.category }}</td>
+        <td>
+          <span class="badge" [ngClass]="book.status === 'ACTIVE' ? 'badge-active' : 'badge-inactive'">
+            {{ book.status }}
+          </span>
+        </td>
+        <td>
+          <button (click)="viewCopies(book.id!)" class="btn btn-primary">Copies</button>
+          <button (click)="editBook(book.id!)" class="btn btn-warning">Edit</button>
+          <button (click)="deleteBook(book.id!)" class="btn btn-danger">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="books.length === 0" class="text-center mt-2">No books found.</p>
+</div>

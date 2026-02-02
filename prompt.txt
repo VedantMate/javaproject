@@ -1,0 +1,173 @@
+Functional Requirements Specification for Library Management System
+(Internal – Facing)
+Module: Admin + Staff (Librarian + Manager)
+0. Current System Overview
+The following functionality is already available in the base build provided to associates:
+Backend (Spring Boot)
+Services:
+Eureka Discovery Server (service registry)
+API Gateway (routes requests to microservices)
+Catalog Service (currently active)
+Catalog Service Entities (with JPA + H2):
+Book → id, title, author, isbn, category, status
+BookCopy → id, bookId, rackNo, status
+Member → id, name, email, phone, membershipStatus
+Staff → id, name, role, email, status
+Controllers (working):
+BookController (/api/admin/books)
+BookCopyController (/api/admin/books/{bookId}/copies)
+MemberController (/api/staff/members)
+StaffController (/api/admin/staff)
+Filters / Queries:
+Search books by title, author, category
+Filter book copies by status
+Repositories:
+BookRepository
+BookCopyRepository
+MemberRepository
+StaffRepository
+1. Overview
+The Admin + Staff module provides internal-facing functionality for library operations.
+Librarians manage book issue/return and member interactions.
+Managers monitor library usage and reports.
+Admins manage catalog and staff accounts.
+2. Scope
+Book catalog and inventory management
+Member registration and membership control
+Issue, return, and fine handling
+Reporting and monitoring
+3. Actors
+Actor
+Role in System
+Admin
+Manages books, copies, staff accounts
+Librarian
+Issues/returns books, manages members
+Manager
+Reviews reports and library performance
+4. Functional Requirements
+4.1 Admin Functions
+ID
+Requirement
+Description
+Flow
+FR-01
+Add Book
+Admin can add a new book with title, author, ISBN
+Fill form → validate → save
+FR-02
+Update Book
+Admin can edit book details
+Select book → update → save
+FR-03
+Delete Book
+Admin can delete a book if no copies are issued
+Select → validate → delete
+FR-04
+Add Book Copy
+Admin adds physical copies under a book
+Select book → add copy
+FR-05
+Update/Delete Copy
+Admin manages book copy status
+Select copy → update/delete
+FR-06
+Create Staff Account
+Admin creates librarian/manager accounts
+Fill form → assign role → save
+FR-07
+Manage Staff
+Activate/deactivate staff
+Select staff → update status
+4.2 Librarian Functions
+ID
+Requirement
+Description
+Flow
+FR-08
+Register Member
+Librarian registers new library member
+Fill form → validate → save
+FR-09
+Issue Book
+Librarian issues available book copy
+Select member → issue book
+FR-10
+Return Book
+Librarian records book return
+Select issue → return
+FR-11
+Calculate Fine
+System calculates late return fine
+Auto-calculated
+FR-12
+Update Copy Status
+Librarian marks copy as lost/damaged
+Select copy → update
+4.3 Manager Functions
+ID
+Requirement
+Description
+Flow
+FR-13
+View Issued Books
+Manager views all issued books
+Select filters → view
+FR-14
+Generate Reports
+Generate issue, fine, and inventory reports
+Select range → generate
+FR-15
+Monitor Inventory
+Dashboard of available vs issued books
+View dashboard
+5. Non-Functional Requirements
+NFR-01: Role-based access control
+NFR-02: Concurrent multi-user support
+NFR-03: Responsive and user-friendly UI
+NFR-04: Clear validation and error messages
+NFR-05: Secure storage of member and staff data
+NFR-06: Audit logs for issue/return activities
+6. Use Cases
+UC-01: Librarian Issues Book
+Precondition:
+Member is active
+Book copy is available
+Steps:
+Librarian selects member
+Searches for book
+Issues available copy
+System updates copy status to ISSUED
+UC-02: Manager Generates Monthly Report
+Precondition:
+Library has transaction data
+Steps:
+Manager opens Reports module
+Selects date range
+Selects report type
+System displays charts and tables
+Current Data (Available Types & Statuses)
+Book Copy Status
+AVAILABLE
+ISSUED
+LOST
+DAMAGED
+Member Status (if implemented)
+ACTIVE
+INACTIVE
+Staff Roles
+ADMIN
+LIBRARIAN
+MANAGER
+
+
+tech stack
+Spring boot 
+Maven 
+H2 database 
+Swagger ui
+Angular for front end 
+Feign client
+Eureka server 
+Api gateway
+don't add jwt token or any authentication

@@ -1,0 +1,35 @@
+<div class="card">
+  <h1>Library Management Dashboard</h1>
+  
+  <div class="dashboard-grid">
+    <div class="stat-card">
+      <h3>{{ dashboardData.totalMembers || 0 }}</h3>
+      <p>Total Members</p>
+    </div>
+    
+    <div class="stat-card">
+      <h3>{{ dashboardData.activeIssues || 0 }}</h3>
+      <p>Active Issues</p>
+    </div>
+    
+    <div class="stat-card">
+      <h3>{{ dashboardData.availableCopies || 0 }}</h3>
+      <p>Available Copies</p>
+    </div>
+    
+    <div class="stat-card">
+      <h3>{{ dashboardData.overdueCount || 0 }}</h3>
+      <p>Overdue Books</p>
+    </div>
+  </div>
+
+  <div class="mt-2">
+    <h2>Quick Links</h2>
+    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+      <a routerLink="/issues/new" class="btn btn-primary">Issue Book</a>
+      <a routerLink="/members/new" class="btn btn-success">Register Member</a>
+      <a routerLink="/books/new" class="btn btn-primary">Add Book</a>
+      <a routerLink="/reports" class="btn btn-warning">View Reports</a>
+    </div>
+  </div>
+</div>

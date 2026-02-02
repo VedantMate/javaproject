@@ -1,0 +1,49 @@
+<div class="card">
+  <h1>Member Management</h1>
+
+  <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
+    <button routerLink="/members/new" class="btn btn-success">Register New Member</button>
+    
+    <div>
+      <input 
+        type="text" 
+        [(ngModel)]="searchName" 
+        placeholder="Search by name" 
+        (keyup.enter)="searchMembers()"
+        style="width: 250px;">
+      <button (click)="searchMembers()" class="btn btn-primary">Search</button>
+    </div>
+  </div>
+
+  <table *ngIf="members.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let member of members">
+        <td>{{ member.id }}</td>
+        <td>{{ member.name }}</td>
+        <td>{{ member.email }}</td>
+        <td>{{ member.phone }}</td>
+        <td>
+          <span class="badge" [ngClass]="member.membershipStatus === 'ACTIVE' ? 'badge-active' : 'badge-inactive'">
+            {{ member.membershipStatus }}
+          </span>
+        </td>
+        <td>
+          <button (click)="editMember(member.id!)" class="btn btn-warning">Edit</button>
+          <button (click)="deleteMember(member.id!)" class="btn btn-danger">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="members.length === 0" class="text-center mt-2">No members found.</p>
+</div>
