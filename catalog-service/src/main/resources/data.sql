@@ -33,8 +33,10 @@ INSERT INTO staff (id, name, role, email, status) VALUES
 (3, 'Mike Manager', 'MANAGER', 'mike@library.com', 'ACTIVE'),
 (4, 'Tom Librarian', 'LIBRARIAN', 'tom@library.com', 'ACTIVE');
 
--- Insert sample book issues
-INSERT INTO book_issues (id, member_id, book_copy_id, book_id, issue_date, due_date, return_date, fine, status) VALUES
-(1, 1, 3, 1, '2026-01-15', '2026-01-29', NULL, 0.0, 'ISSUED'),
-(2, 2, 4, 2, '2026-01-10', '2026-01-24', '2026-01-22', 0.0, 'RETURNED'),
-(3, 3, 6, 3, '2026-01-05', '2026-01-19', '2026-01-25', 30.0, 'RETURNED');
+-- Insert sample users (passwords are BCrypt encoded: 'password123')
+INSERT INTO users (id, username, password, email, role, enabled) VALUES
+(1, 'admin', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8cvv8hXjrQmF0Ky/Wa', 'admin@library.com', 'ADMIN', true),
+(2, 'librarian', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8cvv8hXjrQmF0Ky/Wa', 'librarian@library.com', 'LIBRARIAN', true),
+(3, 'manager', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8cvv8hXjrQmF0Ky/Wa', 'manager@library.com', 'MANAGER', true),
+(4, 'member', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8cvv8hXjrQmF0Ky/Wa', 'member@library.com', 'MEMBER', true);
+

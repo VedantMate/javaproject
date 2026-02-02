@@ -75,4 +75,8 @@ public class BookService {
     public List<Book> searchBooksByCategory(String category) {
         return bookRepository.findByCategory(category);
     }
+    
+    public Long getTotalCount() {
+        return bookRepository.count();
+    }
 }

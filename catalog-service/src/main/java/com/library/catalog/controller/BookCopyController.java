@@ -27,6 +27,29 @@ public class BookCopyController {
         return ResponseEntity.ok(bookCopyService.getAllCopies());
     }
     
+    @GetMapping("/api/book-copies/count")
+    @Operation(summary = "Get total count of book copies")
+    public ResponseEntity<Long> getTotalCopiesCount() {
+        return ResponseEntity.ok(bookCopyService.getTotalCount());
+    }
+    
+    @GetMapping("/api/book-copies/count-by-status")
+    @Operation(summary = "Get count of copies by status")
+    public ResponseEntity<java.util.Map<String, Long>> getCountByStatus() {
+        return ResponseEntity.ok(bookCopyService.getCountByStatus());
+    }
+    
+    @PutMapping("/api/book-copies/{id}/update-status")
+    @Operation(summary = "Update book copy status (for internal use)")
+    public ResponseEntity<Void> updateBookCopyStatus(@PathVariable Long id, @RequestParam String status) {
+        try {
+            bookCopyService.updateStatus(id, CopyStatus.valueOf(status));
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
     @GetMapping("/{bookId}/copies")
     @Operation(summary = "Get all copies of a specific book")
     public ResponseEntity<List<BookCopy>> getCopiesByBookId(@PathVariable Long bookId) {

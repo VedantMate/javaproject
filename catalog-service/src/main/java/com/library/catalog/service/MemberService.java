@@ -60,4 +60,8 @@ public class MemberService {
     public List<Member> searchMembersByName(String name) {
         return memberRepository.findByNameContainingIgnoreCase(name);
     }
+    
+    public Long getTotalCount() {
+        return memberRepository.count();
+    }
 }

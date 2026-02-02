@@ -13,8 +13,8 @@ public class SwaggerConfig {
     public OpenAPI libraryOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Library Management System API")
-                        .description("REST API for Library Management System with Admin, Librarian, and Manager functionalities")
+                        .title("Catalog Service API")
+                        .description("REST API for Catalog Service - manages books, book copies, members, and staff")
                         .version("1.0.0")
                         .contact(new Contact()
                                 .name("Library Management Team")

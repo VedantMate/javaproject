@@ -72,4 +72,23 @@ public class BookCopyService {
     public List<BookCopy> getAvailableCopiesByBookId(Long bookId) {
         return bookCopyRepository.findByBookIdAndStatus(bookId, CopyStatus.AVAILABLE);
     }
+    
+    public Long getTotalCount() {
+        return bookCopyRepository.count();
+    }
+    
+    public java.util.Map<String, Long> getCountByStatus() {
+        java.util.Map<String, Long> counts = new java.util.HashMap<>();
+        for (CopyStatus status : CopyStatus.values()) {
+            counts.put(status.name(), (long) bookCopyRepository.findByStatus(status).size());
+        }
+        return counts;
+    }
+    
+    public void updateStatus(Long id, CopyStatus status) {
+        BookCopy copy = bookCopyRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Book copy not found with id: " + id));
+        copy.setStatus(status);
+        bookCopyRepository.save(copy);
+    }
 }
