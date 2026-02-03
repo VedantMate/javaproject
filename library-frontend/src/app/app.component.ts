@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   template: `
-    <nav *ngIf="authService.isLoggedIn()">
+    <nav>
       <div class="nav-container">
         <div class="nav-brand">
           <h2>Library Management System</h2>
@@ -18,15 +16,9 @@ import { AuthService } from './services/auth.service';
           <li><a routerLink="/issues" routerLinkActive="active">Issues</a></li>
           <li><a routerLink="/reports" routerLinkActive="active">Reports</a></li>
         </ul>
-        <div class="nav-user">
-          <span class="user-info" *ngIf="authService.currentUserValue">
-            {{ authService.currentUserValue.username }} ({{ authService.currentUserValue.role }})
-          </span>
-          <button class="logout-btn" (click)="logout()">Logout</button>
-        </div>
       </div>
     </nav>
-    <div class="container" [class.full-width]="!authService.isLoggedIn()">
+    <div class="container">
       <router-outlet></router-outlet>
     </div>
   `,
@@ -81,47 +73,13 @@ import { AuthService } from './services/auth.service';
       gap: 15px;
     }
 
-    .user-info {
-      color: white;
-      font-size: 14px;
-    }
-
-    .logout-btn {
-      background-color: rgba(255, 255, 255, 0.2);
-      color: white;
-      border: 1px solid white;
-      padding: 8px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .logout-btn:hover {
-      background-color: rgba(255, 255, 255, 0.3);
-    }
-
     .container {
       padding: 20px;
       max-width: 1400px;
       margin: 0 auto;
     }
-
-    .container.full-width {
-      padding: 0;
-      max-width: 100%;
-    }
   `]
 })
 export class AppComponent {
   title = 'Library Management System';
-
-  constructor(
-    public authService: AuthService,
-    private router: Router
-  ) {}
-
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
 }

@@ -45,3 +45,6 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
 
+jwt:
+  secret: MySecretKeyForJWTTokenGenerationAndValidation12345678901234567890
+

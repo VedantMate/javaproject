@@ -6,17 +6,81 @@ spring:
     name: api-gateway
   cloud:
     gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns:
+              - "http://localhost:*"
+              - "http://127.0.0.1:*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+              - HEAD
+            allowedHeaders:
+              - Origin
+              - Content-Type
+              - Accept
+              - Authorization
+              - X-Requested-With
+              - Access-Control-Request-Method
+              - Access-Control-Request-Headers
+              - Cache-Control
+            exposedHeaders:
+              - Authorization
+              - Content-Type
+              - X-Total-Count
+            allowCredentials: true
+            maxAge: 3600
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
       routes:
-        - id: catalog-service
+        - id: circulation-service
+          uri: lb://circulation-service
+          predicates:
+            - Path=/api/circulation/**
+        
+        - id: member-service-staff
+          uri: lb://member-service
+          predicates:
+            - Path=/api/staff/**
+        
+        - id: member-service
+          uri: lb://member-service
+          predicates:
+            - Path=/api/members/**
+        
+        - id: reporting-service
+          uri: lb://reporting-service
+          predicates:
+            - Path=/api/reports/**
+        
+        - id: catalog-admin
           uri: lb://catalog-service
           predicates:
-            - Path=/api/**
-          filters:
-            - StripPrefix=0
+            - Path=/api/admin/**
+        
+        - id: catalog-books
+          uri: lb://catalog-service
+          predicates:
+            - Path=/api/books/**
+        
+        - id: catalog-copies
+          uri: lb://catalog-service
+          predicates:
+            - Path=/api/book-copies/**
+        
+        - id: catalog-authors
+          uri: lb://catalog-service
+          predicates:
+            - Path=/api/authors/**
 
 eureka:
   client:

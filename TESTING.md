@@ -218,7 +218,7 @@ curl -X PUT http://localhost:8080/api/staff/issues/1/return \
    http://localhost:8081/h2-console
    ```
 
-2. **Login Credentials:**
+2. **Connection Details:**
    - JDBC URL: `jdbc:h2:mem:librarydb`
    - Username: `sa`
    - Password: (leave empty)
